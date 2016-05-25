@@ -4,10 +4,7 @@ from .models import Post
 from .forms import PostForm
 
 def post_list(request):
-    try:
-        posts = Post.objects.filter(published_date__isnull=False).order_by('-published_date')
-    except Exception as ex:
-        print ex
+    posts = Post.objects.filter(published_date__isnull=False).order_by('-published_date')
     return render(request, 'blog/post_list.html', {'posts':posts})
 
 def post_detail(request, pk):
@@ -38,3 +35,7 @@ def post_edit(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form':form})
+
+def post_draft_list(request):
+    posts = Post.objects.filter(published_date__isnull=True).order_by('-create_date')
+    return render(request, 'blog/post_draft_list.html', {'posts':posts})
